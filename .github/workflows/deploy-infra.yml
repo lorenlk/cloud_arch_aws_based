@@ -15,7 +15,15 @@ jobs:
       frontend_bucket: ${{ steps.get_outputs.outputs.FRONTEND_BUCKET }}
       cloudfront_id: ${{ steps.get_outputs.outputs.CLOUDFRONT_ID }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4//—
+        with:
+          role-to-assume: arn:aws:iam::485898089185:role/github-actions
+          aws-region: eu-west-1
+
       - name: Terraform Init
         run: |
           cd infra
