@@ -3,7 +3,11 @@ name: Deploy Service F
 on:
   workflow_dispatch:
   push:
-    branches: [ "*" ]
+    paths:
+      - 'services/srv-f/**'
+  pull_request:
+    paths:
+      - 'services/srv-f/**'
 
 jobs:
   deploy:
