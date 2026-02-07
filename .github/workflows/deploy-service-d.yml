@@ -2,7 +2,7 @@ name: Deploy Service D
 
 on:
   push:
-    branches: "*"
+    branches: [ "*" ]
 
 jobs:
   deploy:
