@@ -29,7 +29,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t service-d:latest ./services/service-d
+          docker build -t service-d:latest ./services/srv-d
 
       - name: Tag Docker image for ECR
         run: |
