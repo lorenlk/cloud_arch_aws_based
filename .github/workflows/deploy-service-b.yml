@@ -37,7 +37,7 @@ jobs:
 
       - name: Check if service repository exists
         run: |
-          aws ecr create-repository --repository-name service-a --region eu-west-1 || true
+          aws ecr create-repository --repository-name service-b --region eu-west-1 || true
 
       - name: Push Docker image to ECR
         run: |
