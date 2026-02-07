@@ -1,6 +1,7 @@
 name: Deploy Service D
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "*" ]
 

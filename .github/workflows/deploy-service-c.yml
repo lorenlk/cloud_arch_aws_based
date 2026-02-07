@@ -1,6 +1,7 @@
 name: Deploy Service C
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "*" ]
 
