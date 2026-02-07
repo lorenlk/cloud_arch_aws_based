@@ -19,19 +19,32 @@ jobs:
         run: |
           cd infra
           terraform init
+      - name: Terraform Validate
+        run: terraform validate
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply tfplan -auto-approve
       - name: Get Outputs
         id: get_outputs
         run: |
+          terraform output
           echo "FRONTEND_BUCKET=$(terraform output -raw frontend_bucket)" >> $GITHUB_OUTPUT
           echo "CLOUDFRONT_ID=$(terraform output -raw frontend_cloudfront_id)" >> $GITHUB_OUTPUT
 
   deploy-frontend:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: terraform-deploy
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v4//—
+        with:
+          role-to-assume: arn:aws:iam::485898089185:role/github-actions
+          aws-region: eu-west-1
+
       - name: Deploy Frontend
         run: |
           aws s3 sync ./frontend/build s3://${{ needs.terraform-deploy.outputs.frontend_bucket }} --delete
