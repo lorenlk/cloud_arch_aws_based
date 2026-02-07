@@ -29,14 +29,21 @@ jobs:
           cd infra
           terraform init
       - name: Terraform Validate
-        run: terraform validate
-      # - name: Terraform Plan
-        # run: terraform plan -out=tfplan
+        run: |
+          cd infra
+          terraform validate
+      - name: Terraform Plan
+        run: |
+          cd infra
+          terraform plan -out=tfplan
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: |
+          cd infra
+          terraform apply tfplan -auto-approve
       - name: Get Outputs
         id: get_outputs
         run: |
+          cd infra
           terraform output
           echo "FRONTEND_BUCKET=$(terraform output -raw frontend_bucket)" >> $GITHUB_OUTPUT
           echo "CLOUDFRONT_ID=$(terraform output -raw frontend_cloudfront_id)" >> $GITHUB_OUTPUT
