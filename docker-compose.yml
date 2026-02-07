@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  service-a:
+    build: ./services/srv-a
+    ports:
+      - "8000:8000"
+
+  service-b:
+    build: ./services/srv-b
+    ports:
+      - "8001:8000"
+
+  service-e:
+    build: ./services/srv-e
+    ports:
+      - "8004:8000"
+    environment:
+      - REDIS_HOST=redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
