@@ -12,7 +12,7 @@ resource "aws_lb" "main" {
 resource "aws_lb_target_group" "targets" {
   for_each = { for k, v in var.services : k => v if v.expose }
 
-  name        = replace("${var.project_name}-${each.key}", "_", "-")
+  name_prefix = substr(replace(each.key, "_", "-"), 0, 6)
   port        = each.value.port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -47,6 +47,10 @@ resource "aws_lb_listener_rule" "api_routing" {
     path_pattern {
       values = [for path in each.value.endpoints : "${each.value.path_prefix}${path}*"]
     }
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
