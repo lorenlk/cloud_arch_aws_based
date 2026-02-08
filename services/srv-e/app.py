@@ -17,7 +17,7 @@ class CalcRequest(BaseModel):
 def health():
     return {"status": "ok"}
 
-@app.post("/count_double")
+@app.post("/api/count_double")
 def count_double(req: CalcRequest):
     key = f"value:{req.value}"
     r.incr(key)

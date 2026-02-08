@@ -11,6 +11,6 @@ class CalcRequest(BaseModel):
 def health():
     return {"status": "ok"}
 
-@app.post("/add")
+@app.post("/api/add")
 def add(req: CalcRequest):
     return {"result": req.value + 10}

@@ -3,7 +3,14 @@ name: Deploy
 on:
   workflow_dispatch:
   push:
-    branches: [ "*" ]
+    paths:
+      - 'infra/**'
+      - 'front/**'
+  pull_request:
+    paths:
+      - 'infra/**'
+      - 'front/**'
+
 
 permissions:
   id-token: write

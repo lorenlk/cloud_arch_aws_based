@@ -11,7 +11,7 @@ class CalcRequest(BaseModel):
 def health():
     return {"status": "ok"}
 
-@app.post("/calculate")
+@app.post("/api/calculate")
 def calculate(req: CalcRequest):
     doubled = req.value * 2
 
