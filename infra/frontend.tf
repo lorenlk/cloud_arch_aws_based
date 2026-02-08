@@ -1,7 +1,7 @@
 # S3 bucket for frontend
 resource "aws_s3_bucket" "frontend" {
   bucket = "${var.project_name}-frontend"
-  acl    = "public-read"
+  aws_s3_bucket_acl    = "public-read"
 }
 
 resource "aws_s3_bucket_website_configuration" "frontend_website" {
