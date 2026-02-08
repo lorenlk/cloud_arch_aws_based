@@ -4,13 +4,14 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-class CalcRequest(BaseModel):
+class DivRequest(BaseModel):
     value: float
+    dividend: float
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
 @app.post("/divide")
-def divide(req: CalcRequest):
-    return {"result": req.value / 2}
+def divide(req: DivRequest):
+    return {"result": req.value / req.dividend}

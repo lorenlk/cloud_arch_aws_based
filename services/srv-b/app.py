@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-class CalcRequest(BaseModel):
+class AddRequest(BaseModel):
     value: float
 
 @app.get("/health")
@@ -12,5 +12,5 @@ def health():
     return {"status": "ok"}
 
 @app.post("/api/add")
-def add(req: CalcRequest):
+def add(req: AddRequest):
     return {"result": req.value + 10}

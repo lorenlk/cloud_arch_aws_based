@@ -13,11 +13,20 @@ def health():
 
 @app.post("/api/calculate")
 def calculate(req: CalcRequest):
-    doubled = req.value * 2
+    multiplier = 2
 
     # Call service-c internally (private service)
     res = requests.post(
         "http://service-c.demo-app.local:8000/multiply",
-        json={"value": doubled}
+        json={"value": doubled, "multiplier": multiplier}
     )
-    return res.json()
+    res.raise_for_status()
+    
+    remote_data = res.json()
+    
+    # 5. Retornar al front con el formato que espera (usando "result")
+    return {
+        "value": req.value,
+        "result": remote_data.get("result"),
+        "service_c_status": "ok"
+    }

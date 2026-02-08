@@ -4,13 +4,14 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-class CalcRequest(BaseModel):
+class MultRequest(BaseModel):
     value: float
+    multiplier: float
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
 @app.post("/multiply")
-def multiply(req: CalcRequest):
-    return {"result": req.value * 3}
+def multiply(req: MultRequest):
+    return {"result": req.value * req.multiplier}
