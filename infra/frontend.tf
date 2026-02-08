@@ -29,6 +29,17 @@ resource "aws_cloudfront_distribution" "frontend" {
   is_ipv6_enabled     = true
   default_root_object = "index.html"
 
+  origin {
+    domain_name = aws_lb.main.dns_name
+    origin_id   = "ALB-Backend"
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only" # O "https-only" si tienes SSL en el ALB
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
@@ -40,6 +51,28 @@ resource "aws_cloudfront_distribution" "frontend" {
       query_string = false
       cookies {
         forward = "none"
+      }
+    }
+  }
+
+  dynamic "ordered_cache_behavior" {
+    for_each = ["/calculate", "/add", "/count_double"]
+    content {
+      path_pattern     = ordered_cache_behavior.value
+      target_origin_id = "ALB-Backend"
+
+      allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+      cached_methods   = ["GET", "HEAD"]
+
+      default_ttl = 0
+      min_ttl     = 0
+      max_ttl     = 0
+
+      viewer_protocol_policy = "https-only"
+      forwarded_values {
+        query_string = true
+        headers      = ["*"]
+        cookies { forward = "all" }
       }
     }
   }

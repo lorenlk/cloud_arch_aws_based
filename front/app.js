@@ -1,7 +1,7 @@
 async function doubleValue() {
   const value = parseFloat(document.getElementById("doubleInput").value);
   try {
-    const res = await fetch("http://localhost:8000/calculate", {
+    const res = await fetch("/calculate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ value: value })
@@ -17,7 +17,7 @@ async function doubleValue() {
 async function addValue() {
   const value = parseFloat(document.getElementById("addInput").value);
   try {
-    const res = await fetch("http://localhost:8001/add", {
+    const res = await fetch("/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ value: value })
@@ -33,7 +33,7 @@ async function addValue() {
 async function countDouble() {
   const value = parseFloat(document.getElementById("countInput").value);
   try {
-    const res = await fetch("http://localhost:8004/count_double", {
+    const res = await fetch("/count_double", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ value: value })
