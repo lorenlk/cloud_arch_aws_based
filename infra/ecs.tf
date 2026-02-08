@@ -95,7 +95,6 @@ resource "aws_ecs_service" "services" {
 
   service_registries {
     registry_arn = aws_service_discovery_service.main[each.key].arn
-    port         = each.value.port
   }
 
 }
