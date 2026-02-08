@@ -67,5 +67,5 @@ jobs:
 
       - name: Deploy Frontend
         run: |
-          aws s3 sync ./frontend/build s3://${{ needs.terraform-deploy.outputs.frontend_bucket }} --delete
+          aws s3 sync ./front s3://${{ needs.terraform-deploy.outputs.frontend_bucket }} --delete
           aws cloudfront create-invalidation --distribution-id ${{ needs.terraform-deploy.outputs.cloudfront_id }} --paths "/*"
