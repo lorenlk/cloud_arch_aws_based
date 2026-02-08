@@ -11,8 +11,8 @@ class CalcRequest(BaseModel):
 def health():
     return {"status": "ok"}
 
-@app.post("/double_then_multiply")
-def double_then_multiply(req: CalcRequest):
+@app.post("/calculate")
+def calculate(req: CalcRequest):
     doubled = req.value * 2
 
     # Call service-c internally (private service)

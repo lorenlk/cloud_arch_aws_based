@@ -45,7 +45,7 @@ resource "aws_lb_listener_rule" "api_routing" {
 
   condition {
     path_pattern {
-      values = ["${each.value.path_prefix}*"]
+      values = [for path in each.value.endpoints : "${each.value.prefix}${path}*"]
     }
   }
 }

@@ -55,13 +55,14 @@ variable "services" {
     port        = number
     expose      = bool
     path_prefix = string
+    endpoint_path = list(string)
   }))
   default = {
-    service_a = { port = 8000, expose = true, path_prefix = "/api/a" }
-    service_b = { port = 8001, expose = true, path_prefix = "/api/b" }
-    service_c = { port = 8002, expose = false, path_prefix = "" }
-    service_d = { port = 8003, expose = false, path_prefix = "" }
-    service_e = { port = 8004, expose = true, path_prefix = "/api/e" }
-    service_f = { port = 8005, expose = false, path_prefix = "" }
+    service_a = { port = 8000, expose = true, path_prefix = "/api", endpoint_path = ["/calculate"]}
+    service_b = { port = 8001, expose = true, path_prefix = "/api", endpoint_path = ["/add"]}
+    service_c = { port = 8002, expose = false, path_prefix = "", endpoint_path = [] }
+    service_d = { port = 8003, expose = false, path_prefix = "", endpoint_path = [] }
+    service_e = { port = 8004, expose = true, path_prefix = "/api", endpoint_path = ["/count_double"]}
+    service_f = { port = 8005, expose = false, path_prefix = "", endpoint_path = [] }
   }
 }
