@@ -18,7 +18,7 @@ def calculate(req: CalcRequest):
     # Call service-c internally (private service)
     res = requests.post(
         "http://service-c.demo-app.local:8000/multiply",
-        json={"value": doubled, "multiplier": multiplier}
+        json={"value": req.value, "multiplier": multiplier}
     )
     res.raise_for_status()
     
