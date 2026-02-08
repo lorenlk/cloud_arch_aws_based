@@ -36,6 +36,14 @@ resource "aws_security_group" "ecs" {
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
   }
+  
+  ingress {
+    description = "Internal service-to-service traffic"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    self        = true 
+  }
 
   egress {
     description = "All outbound"
