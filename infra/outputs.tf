@@ -4,9 +4,9 @@ output "alb_dns" {
 }
 
 output "ecs_services" {
-  description = "List of ECS service ARNs"
+  description = "List of ECS service ARNs by id"
   value = {
-    for s_name, s in aws_ecs_service.services : s_name => s.arn
+    for s_name, s in aws_ecs_service.services : s_name => s.id
   }
 }
 
