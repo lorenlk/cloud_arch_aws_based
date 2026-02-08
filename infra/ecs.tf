@@ -44,6 +44,13 @@ resource "aws_ecs_task_definition" "tasks" {
   ])
 }
 
+resource "aws_cloudwatch_log_group" "ecs" {
+  for_each = var.services
+
+  name              = "/ecs/${var.project_name}-${each.key}"
+  retention_in_days = 7
+}
+
 resource "aws_ecs_service" "services" {
   for_each = var.services
 
