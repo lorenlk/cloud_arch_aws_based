@@ -30,8 +30,8 @@ async function addValue() {
   }
 }
 
-async function countDouble() {
-  const value = parseFloat(document.getElementById("countInput").value);
+async function increaseElement() {
+  const value = parseFloat(document.getElementById("increaseInput").value);
   try {
     const res = await fetch("/api/count_double", {
       method: "POST",
@@ -39,7 +39,7 @@ async function countDouble() {
       body: JSON.stringify({ value: value })
     });
     const data = await res.json();
-    document.getElementById("countResult").textContent = `Result: ${data.result}`;
+    document.getElementById("increaseResult").textContent = `Result: ${data.result}`;
   } catch (err) {
     console.error(err);
     alert("Failed to call service-e");
