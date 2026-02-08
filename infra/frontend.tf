@@ -17,6 +17,14 @@ resource "aws_s3_bucket_website_configuration" "frontend_website" {
   index_document { suffix = "index.html" }
 }
 
+data "aws_cloudfront_origin_request_policy" "api_policy_all_except_host" {
+  name = "Managed-AllViewerExceptHostHeader"
+}
+
+data "aws_cloudfront_origin_request_policy" "api_policy_caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
 # CloudFront distribution
 resource "aws_cloudfront_distribution" "frontend" {
   origin {
@@ -63,8 +71,8 @@ resource "aws_cloudfront_distribution" "frontend" {
     cached_methods   = ["GET", "HEAD"]
     viewer_protocol_policy = "redirect-to-https"
 
-    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingDisabled
-    origin_request_policy_id = "216adef6-5c74-47fd-b175-3f622901a1ff" # Managed-AllViewerExceptHostHeader
+    cache_policy_id          = data.aws_cloudfront_origin_request_policy.api_policy_caching_disabled.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.api_policy_all_except_host.id
   }
 
   price_class = "PriceClass_100"
