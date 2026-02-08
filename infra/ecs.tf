@@ -22,6 +22,16 @@ resource "aws_ecs_task_definition" "tasks" {
       name      = each.key
       image = "485898089185.dkr.ecr.${var.aws_region}.amazonaws.com/${replace(each.key, "_", "-")}:latest"
       essential = true
+      environment = [
+        { 
+          name  = "REDIS_HOST", 
+          value = aws_elasticache_cluster.redis.cache_nodes.0.address 
+        },
+        { 
+          name  = "REDIS_PORT", 
+          value = tostring(aws_elasticache_cluster.redis.port) 
+        }
+      ]
       portMappings = [
         {
           containerPort = each.value.port
@@ -82,4 +92,10 @@ resource "aws_ecs_service" "services" {
   }
 
   depends_on = [aws_lb_listener.http]
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.main[each.key].arn
+    port         = each.value.port
+  }
+
 }
