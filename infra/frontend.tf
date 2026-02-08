@@ -63,11 +63,8 @@ resource "aws_cloudfront_distribution" "frontend" {
     cached_methods   = ["GET", "HEAD"]
     viewer_protocol_policy = "redirect-to-https"
 
-    forwarded_values {
-      query_string = true
-      headers      = ["*"]
-      cookies { forward = "all" }
-    }
+    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingDisabled
+    origin_request_policy_id = "b689b0a8-53d0-40a8-baf7-d115d254631c" # Managed-AllViewerExceptHostHeader
   }
 
   price_class = "PriceClass_100"
