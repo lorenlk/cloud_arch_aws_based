@@ -28,18 +28,22 @@ jobs:
         run: |
           cd infra
           terraform init
+
       - name: Terraform Validate
         run: |
           cd infra
           terraform validate
+
       - name: Terraform Plan
         run: |
           cd infra
           terraform plan -out=tfplan
+
       - name: Terraform Apply
         run: |
           cd infra
-          terraform apply tfplan -auto-approve
+          terraform apply tfplan
+
       - name: Get Outputs
         id: get_outputs
         run: |
