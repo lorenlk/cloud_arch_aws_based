@@ -32,7 +32,7 @@ resource "aws_security_group" "ecs" {
   ingress {
     description     = "From ALB"
     from_port       = 8000
-    to_port         = 8000
+    to_port         = 8005
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
   }

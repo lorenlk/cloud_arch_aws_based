@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "tasks" {
   container_definitions = jsonencode([
     {
       name      = each.key
-      image     = "485898089185.dkr.ecr.${var.aws_region}.amazonaws.com/${each.key}:latest"
+      image = "485898089185.dkr.ecr.${var.aws_region}.amazonaws.com/${replace(each.key, "_", "-")}:latest"
       essential = true
       portMappings = [
         {
@@ -30,6 +30,15 @@ resource "aws_ecs_task_definition" "tasks" {
         timeout     = 5
         retries     = 3
         startPeriod = 10
+      }
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = "/ecs/${var.project_name}-${each.key}"
+          "awslogs-region"        = var.aws_region
+          "awslogs-stream-prefix" = "ecs"
+        }
       }
     }
   ])
