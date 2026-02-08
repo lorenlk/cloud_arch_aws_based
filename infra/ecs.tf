@@ -69,8 +69,7 @@ resource "aws_lb_target_group" "targets" {
     svc_name => svc_conf
     if svc_conf.expose
   }
-
-  name        = "${var.project_name}-${each.key}"
+  name        = replace("${var.project_name}-${each.key}", "_", "-")
   port        = each.value.port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
