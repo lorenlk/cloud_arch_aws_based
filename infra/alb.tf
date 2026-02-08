@@ -9,20 +9,36 @@ resource "aws_lb" "main" {
   }
 }
 
-resource "aws_lb_target_group" "service_a" {
-  name     = "${var.project_name}-svc-a"
-  port     = 8000
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+resource "aws_lb_target_group" "targets" {
+  for_each = { for k, v in var.services : k => v if v.expose }
+
+  name        = replace("${var.project_name}-${each.key}", "_", "-")
+  port        = each.value.port
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
   target_type = "ip"
 
   health_check {
-    path                = "/health"
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    interval            = 15
-    timeout             = 5
-    matcher             = "200"
+    path    = "/health"
+    matcher = "200"
+  }
+}
+
+resource "aws_lb_listener_rule" "api_routing" {
+  for_each = { for k, v in var.services : k => v if v.expose }
+
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 100 + index(keys({ for k, v in var.services : k => v if v.expose }), each.key)
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.targets[each.key].arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["${each.value.path_prefix}*"]
+    }
   }
 }
 
