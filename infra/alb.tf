@@ -19,8 +19,12 @@ resource "aws_lb_target_group" "targets" {
   target_type = "ip"
 
   health_check {
-    path    = "/health"
-    matcher = "200"
+    path                = "/health"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    interval            = 15
+    timeout             = 5
+    matcher             = "200"
   }
 }
 
@@ -28,7 +32,7 @@ resource "aws_lb_listener_rule" "api_routing" {
   for_each = { for k, v in var.services : k => v if v.expose }
 
   listener_arn = aws_lb_listener.http.arn
-  priority     = 100 + index(keys({ for k, v in var.services : k => v if v.expose }), each.key)
+  priority     = 100 + index(keys(var.services), each.key)
 
   action {
     type             = "forward"
@@ -48,7 +52,11 @@ resource "aws_lb_listener" "http" {
   protocol          = "HTTP"
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.service_a.arn
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "404: Not Found"
+      status_code  = "404"
+    }
   }
 }
