@@ -58,7 +58,7 @@ resource "aws_cloudfront_distribution" "frontend" {
   dynamic "ordered_cache_behavior" {
     for_each = [for k, v in var.services : v.path_prefix if v.expose]
     content {
-      path_pattern     = "${ordered_cache_behavior.value}/*"
+      path_pattern     = "/api${ordered_cache_behavior.value}/*"
       target_origin_id = "ALB-Backend"
 
       allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]

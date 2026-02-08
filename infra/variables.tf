@@ -57,11 +57,11 @@ variable "services" {
     path_prefix = string
   }))
   default = {
-    service_a = { port = 8000, expose = true, path_prefix = "/a" }
-    service_b = { port = 8001, expose = true, path_prefix = "/b" }
+    service_a = { port = 8000, expose = true, path_prefix = "/api/a" }
+    service_b = { port = 8001, expose = true, path_prefix = "/api/b" }
     service_c = { port = 8002, expose = false, path_prefix = "" }
     service_d = { port = 8003, expose = false, path_prefix = "" }
-    service_e = { port = 8004, expose = true, path_prefix = "/e" }
+    service_e = { port = 8004, expose = true, path_prefix = "/api/e" }
     service_f = { port = 8005, expose = false, path_prefix = "" }
   }
 }
