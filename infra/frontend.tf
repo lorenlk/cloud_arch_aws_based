@@ -1,6 +1,6 @@
 # S3 bucket for frontend
 resource "aws_s3_bucket" "frontend" {
-  bucket = "${var.project_name}-frontend"
+  bucket = "cloud-demo-terraform-${var.project_name}-frontend"
 }
 
 resource "aws_s3_bucket_ownership_controls" "frontend" {
